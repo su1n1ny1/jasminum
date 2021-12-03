@@ -1,4 +1,5 @@
 <!ENTITY jasminum.menu.CNKI.update.label "Get CNKI Metadata…">
+<!ENTITY jasminum.menu.CNKI.book.label "Get Book Metadata…">
 <!ENTITY jasminum.menu.CNKI.updateCiteCSSCI.label "Update CNKI citation">
 <!ENTITY jasminum.menu.CNKI.addBookmark.label "Add Bookmark to PDF">
 <!ENTITY jasminum.menu.CNKI.label "CNKI">
