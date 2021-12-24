@@ -187,15 +187,16 @@ Zotero.Jasminum = new function () {
             await item.saveTx();
 
         } else {
-            var fileData = this.Scrape.splitFilename(item.getFilename());
+            let patent = Zotero.Prefs.get("jasminum.namepatent");
+            let fileData = this.Scrape.splitFilename(item.attachmentFilename, patent));
             Zotero.debug(fileData);
-            var targetRows = await this.Scrape.search(fileData);
+            let targetRows = await this.Scrape.search(fileData);
             // 有查询结果返回
             if (targetRows && targetRows.length > 0) {
-                var [data, targetData] = await this.Scrape.getRefworks(
+                let [data, targetData] = await this.Scrape.getRefworks(
                     targetRows
                 );
-                var newItems = await this.Utils.trans2Items(data, libraryID);
+                let newItems = await this.Utils.trans2Items(data, libraryID);
                 Zotero.debug(newItems);
                 newItems = await this.Utils.fixItem(newItems, targetData);
                 Zotero.debug("** Jasminum DB trans ...");
@@ -208,7 +209,7 @@ Zotero.Jasminum = new function () {
                 }
                 // 只有单个返回结果
                 if (newItems.length == 1) {
-                    var newItem = newItems[0];
+                    let newItem = newItems[0];
                     // Put old item as a child of the new item
                     item.parentID = newItem.id;
                     // Use Zotfile to rename file

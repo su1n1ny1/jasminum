@@ -1,7 +1,12 @@
 Zotero.Jasminum.Scrape = new function () {
-    this.splitFilename = function (filename) {
+    /**
+     * 拆分文件名，获取标题，作者等信息
+     * @param {String} filename
+     * @param {String} patent
+     * @returns {Object} 返回 author，title 匹配值
+     */
+    this.splitFilename = function (filename, patent) {
         // Make query parameters from filename
-        var patent = Zotero.Prefs.get("jasminum.namepatent");
         var prefix = filename.replace(/\.\w+$/, ''); // 删除文件后缀
         var prefix = prefix.replace(/\.ashx$/g, ""); // 删除末尾.ashx字符
         prefix = prefix.replace(/^_|_$/g, '');  // 删除前后的下划线
@@ -658,4 +663,50 @@ Zotero.Jasminum.Scrape = new function () {
         Zotero.debug(fileExist);
         return fileExist;
     }.bind(Zotero.Jasminum);
+
+    //###########################################
+    // Search meta data for book attachment item
+    // 搜索中文图书信息
+    //###########################################
+
+    /**
+     * Wenjin Search 
+     * 国家图书馆文津搜索
+     * @param {Zotero.Item} 附件条目 Attachment item
+     * @returns {} todo
+     */
+
+    this.wenjinSearch = async function (item) {
+        let filename = item.attachmentFilename.replace(/\.\w+$/, "");
+        let patent = Zotero.Prefs.get("jasminum.namepatent");
+        let searchData = this.Scrape.splitFilename(filename, patent);
+        let searchUrl = "http://find.nlc.cn/search/doSearch?"
+            + `query=${searchData.keyword}&secQuery=`
+            + `&actualQuery=((${searchData.keyword}))`
+            + "&searchType=0"
+            + `&orginQuery=((${searchData.keyword}))`
+            + "&targetFieldLog=全部字段"
+            + "&docType=全部&orderBy=PUBLISH_DATE_DESC";
+        searchUrl = encodeURI(searchUrl);
+
+        let requestHeaders = {
+            Host: "find.nlc.cn",
+            "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:95.0) Gecko/20100101 Firefox/95.0",
+            Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+            "Accept-Language": "zh-CN,en-US;q=0.7,en;q=0.3",
+            "Accept-Encoding": "gzip, deflate",
+            Connection: "keep-alive",
+            "Upgrade-Insecure-Requests": 1,
+            "Cache-Control": "max-age=0"
+        };
+
+        let response = await Zotero.HTTP.request("GET", searchUrl)
+        let resultDoc = this.Utils.string2HTML(
+            response.responseText
+        );
+        let results = Zotero.Utilities.xpath(resultDoc, "//div[@class='article_item']");
+        Zotero.debug(`** Jasminum wenjin search results: ${results.length}`);
+
+    }
+
 }
