@@ -673,7 +673,7 @@ Zotero.Jasminum.Scrape = new function () {
      * Wenjin Search 
      * 国家图书馆文津搜索
      * @param {Zotero.Item} 附件条目 Attachment item
-     * @returns {} todo
+     * @returns {Object} 返回title 为 key，url 为 value 的对象
      */
 
     this.wenjinSearch = async function (item) {
@@ -689,24 +689,64 @@ Zotero.Jasminum.Scrape = new function () {
             + "&docType=全部&orderBy=PUBLISH_DATE_DESC";
         searchUrl = encodeURI(searchUrl);
 
-        let requestHeaders = {
-            Host: "find.nlc.cn",
-            "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:95.0) Gecko/20100101 Firefox/95.0",
-            Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-            "Accept-Language": "zh-CN,en-US;q=0.7,en;q=0.3",
-            "Accept-Encoding": "gzip, deflate",
-            Connection: "keep-alive",
-            "Upgrade-Insecure-Requests": 1,
-            "Cache-Control": "max-age=0"
-        };
+        // let requestHeaders = {
+        //     Host: "find.nlc.cn",
+        //     "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:95.0) Gecko/20100101 Firefox/95.0",
+        //     Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        //     "Accept-Language": "zh-CN,en-US;q=0.7,en;q=0.3",
+        //     "Accept-Encoding": "gzip, deflate",
+        //     Connection: "keep-alive",
+        //     "Upgrade-Insecure-Requests": 1,
+        //     "Cache-Control": "max-age=0"
+        // };
 
         let response = await Zotero.HTTP.request("GET", searchUrl)
         let resultDoc = this.Utils.string2HTML(
             response.responseText
         );
         let results = Zotero.Utilities.xpath(resultDoc, "//div[@class='article_item']");
+        let rowSelectors = {};
+        for (let result of results) {
+            let resultTitle = "文津 " + result.innerText.split(/\n\s+/).slice(0, 5).join(" ").trim();
+            Zotero.debug(resultTitle);
+            let onclickParams = result.querySelector(".book_name a").getAttribute("onclick").split(",");
+            let url = "http://find.nlc.cn/search/showDocDetails?docId="
+                + onclickParams[2]
+                + "&dataSource="
+                + onclickParams[3]
+                + "&query="
+                + onclickParams[4];
+            rowSelectors[resultTitle] = url;
+        }
         Zotero.debug(`** Jasminum wenjin search results: ${results.length}`);
+        return rowSelectors;
+    }.bind(Zotero.Jasminum);
 
-    }
+    /**
+     * 将文津查询结果转换为条目
+     * Translator for Wenjin
+     * @param {}
+     * @returns {}
+     */
+    this.wenjinTranslator = async function (url) {
+
+    }.bind(Zotero.Jasminum);
+
+    /**
+     * Combine search results and show selection pop up window
+     * 聚合不同的搜索结果，并提供选择窗口
+     * @param {Array} 不同搜索结果组成的列表
+     * @returns  todo
+     */
+    this.searchConcat = function (results) {
+        let concatRowSelectors = {};
+
+        results.forEach(result => {
+            for (let k of Object.keys(result)) {
+                concatRowSelectors[k] = result[k]
+            }
+        });
+        return this.Scrape.selectRow(concatRowSelectors);
+    }.bind(Zotero.Jasminum);
 
 }

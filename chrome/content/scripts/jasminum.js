@@ -188,7 +188,7 @@ Zotero.Jasminum = new function () {
 
         } else {
             let patent = Zotero.Prefs.get("jasminum.namepatent");
-            let fileData = this.Scrape.splitFilename(item.attachmentFilename, patent));
+            let fileData = this.Scrape.splitFilename(item.attachmentFilename, patent);
             Zotero.debug(fileData);
             let targetRows = await this.Scrape.search(fileData);
             // 有查询结果返回
@@ -469,4 +469,17 @@ Zotero.Jasminum = new function () {
         var items = ZoteroPane.getSelectedItems();
         for (var item of items) { await this.setLanguage(item) }
     };
+
+    /**
+     * Search meta data for book item
+     * 书籍查找元数据
+     * @param {volid} 默认选择 Zotero 面板选中条目
+     * @returns {volid}
+     */
+
+    this.searchBookItems = async function () {
+        for (let item of ZoteroPane.getSelectedItems()) {
+            this.Scrape.wenjinSearch(item);
+        }
+    }
 }

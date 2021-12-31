@@ -25,7 +25,7 @@
                     id="jasminum-itemmenu-searchBook"
                     label="&jasminum.menu.CNKI.book.label;"
                     class="menuitem-iconic jasminum-book-icon" 
-                    oncommand="Zotero.Jasminum.searchSelectedItems();"/>
+                    oncommand="Zotero.Jasminum.searchBookItems();"/>
 		        <menuitem
                     id="jasminum-itemmenu-bookmark"
                     label="&jasminum.menu.CNKI.addBookmark.label;"
