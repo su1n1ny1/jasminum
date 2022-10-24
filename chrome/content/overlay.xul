@@ -75,6 +75,11 @@
                     label="&menu.CNKI.attachment.label;"
                     class="menuitem-iconic jasminum-pdf-icon"
                     oncommand="Zotero.Jasminum.getAttachments();"/>
+                <menuitem
+                    id="jasminum-itemmenu-updateMetadata"
+                    label="UpdateMetadata"
+                    class="menuitem-iconic jasminum-pdf-icon"
+                    oncommand="Zotero.Jasminum.updateMetadata();"/>
             </menupopup>
         </menu>
         <menu id="jasminum-popup-menu2"

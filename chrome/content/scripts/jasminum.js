@@ -171,17 +171,18 @@ Zotero.Jasminum = new function () {
         // Retrive meta data for webpage item
         if (Zotero.ItemTypes.getName(item.itemTypeID) === "webpage") {
             Zotero.debug("** Jasminum add webpage.");
-            let articleId = this.Scrape.getIDFromURL(item.getField("url"));
-            Zotero.debug([articleId]);
+            let articleId = await this.Scrape.getIDFromURL(item.getField("url"));
             let postData = this.Scrape.createRefPostData([articleId]);
             let data = await this.Scrape.getRefText(postData);
             // Zotero.debug("** Jasminum webpage data");
 
             // Some item will be updated after published
-            if (data.length === 0 && articleId.dbname.includes("TEMP")) {
-                articleId = await this.Scrape.getIDFromPage(item.getField("url"));
-                Zotero.debug([articleId]);
-            }
+            // if (data.length === 0 && articleId.dbname.includes("TEMP")) {
+            //     let htmlString = await this.Scrape.getHtmlPage(item.getField("url"));
+            //     let htmlDocument = this.Utils.string2HTML(htmlString);
+            //     articleId = await this.Scrape.getIDFromPage(htmlDocument);
+            // }
+            Zotero.debug([articleId]);
             postData = this.Scrape.createRefPostData([articleId]);
             data = await this.Scrape.getRefText(postData);
             var newItems = await this.Utils.trans2Items(data, libraryID);
@@ -650,4 +651,28 @@ Zotero.Jasminum = new function () {
         var items = ZoteroPane.getSelectedItems();
         for (var item of items) { await this.Scrape.importAttachment(item) }
     };
+
+    /**
+     * Update metadata for Chinese items
+     * 对中文文献：1. 先根据URL获取信息； 2. 根据标题，作者进行查询，再获取信息
+     * @param {[Zotero.item]}
+     * @return {void}
+     */
+    this.updateMetadata = async function () {
+        var items = ZoteroPane.getSelectedItems();
+        for (let item of items) {
+            Zotero.debug(`** Begain to update metadata: ${item.getField("title")}`);
+            let articleID = await this.Scrape.getIDFromURL(item.getField("url"));
+            let postData = this.Scrape.createRefPostData([articleID]);
+            let refdata = await this.Scrape.getRefText(postData);
+            Zotero.debug(refdata);
+            var newItems = await this.Utils.trans2Items(refdata, null);
+            let targetData = {
+                targetUrls: [item.getField("url")],
+                citations: [null]
+            };
+            newItems = await this.Utils.fixItem(newItems, targetData);
+            Zotero.debug(newItems[0]);
+        }
+    }
 }

@@ -274,22 +274,29 @@ Zotero.Jasminum.Scrape = new function () {
     }.bind(Zotero.Jasminum);
 
 
-    this.getIDFromURL = function (url) {
+    this.getIDFromURL = async function (url) {
         if (!url) return false;
         // add regex for navi.cnki.net
         var dbname = url.match(/[?&](?:db|table)[nN]ame=([^&#]*)/i);
         var filename = url.match(/[?&]filename=([^&#]*)/i);
         var dbcode = url.match(/[?&]dbcode=([^&#]*)/i);
         if (
-            !dbname ||
-            !dbname[1] ||
-            !filename ||
-            !filename[1] ||
-            !dbcode ||
-            !dbcode[1]
-        )
-            return false;
-        return { dbname: dbname[1], filename: filename[1], dbcode: dbcode[1] };
+            dbname && dbname[1] &&
+            filename && filename[1] &&
+            dbcode && dbcode[1]
+        ) {
+            return { dbname: dbname[1], filename: filename[1], dbcode: dbcode[1] };
+        } else { // 获取网址内容，获取ID
+            try {
+                let htmlString = await this.Scrape.getHtmlPage(item.getField("url"));
+                let htmlDocument = this.Utils.string2HTML(htmlString);
+                return await this.Scrape.getIDFromPage(htmlDocument);
+            } catch (e) {
+                Zotero.debug("** Jasminum getIDFromURL ERROR");
+                Zotero.debug(e);
+                return false;
+            }
+        }
     }.bind(Zotero.Jasminum);
 
     /**
@@ -319,21 +326,6 @@ Zotero.Jasminum.Scrape = new function () {
         let dbname = page.querySelector("input#paramdbname").value;
         Zotero.debug(`${dbname}, ${dbcode}, ${filename}`);
         return { dbname: dbname, filename: filename, dbcode: dbcode };
-    }.bind(Zotero.Jasminum);
-
-    /**
-     * Get CNKI article id
-     * @param {String} url CNKI url string
-     * @return {Object} article id
-     */
-    this.getCNKIID = async function (url) {
-        if (this.Scrape.getIDFromURL(url)) {
-            return this.Scrape.getIDFromURL(url);
-        } else {
-            let htmlString = await this.Scrape.getHtmlPage(url);
-            let htmlDocument = this.Utils.string2HTML(htmlString);
-            return this.Scrape.getIDFromPage(htmlDocument);
-        }
     }.bind(Zotero.Jasminum);
 
 
@@ -514,9 +506,9 @@ Zotero.Jasminum.Scrape = new function () {
     // For Adding bookmark
     //########################
 
-    this.getReaderUrl = function (itemUrl) {
+    this.getReaderUrl = async function (itemUrl) {
         Zotero.debug("** Jasminum get Reader url.");
-        var itemid = this.Scrape.getIDFromURL(itemUrl);
+        var itemid = await this.Scrape.getIDFromURL(itemUrl);
         var readerUrl =
             "https://kreader.cnki.net/Kreader/CatalogViewPage.aspx?dbCode=" +
             itemid.dbcode +
@@ -588,7 +580,7 @@ Zotero.Jasminum.Scrape = new function () {
             // 匹配知网 URL
             parentItem.getField("url") &&
             parentItem.getField("url").match(/^https?:\/\/kns\.cnki\.net/) &&// Except nxgp.cnki.net
-            this.Scrape.getIDFromURL(parentItem.getField("url")) // A valid ID
+            await this.Scrape.getIDFromURL(parentItem.getField("url")) // A valid ID
         ) {
             Zotero.debug("** Jasminum item url exists");
             itemUrl = parentItem.getField("url");
@@ -725,7 +717,7 @@ Zotero.Jasminum.Scrape = new function () {
      */
     this.importAttachment = async function (item) {
         Zotero.debug("** Jasminum import attachment begin");
-        let articleID = await this.Scrape.getCNKIID(item.getField("url"));
+        let articleID = await this.Scrape.getIDFromURL(item.getField("url"));
         if (!articleID) { // 从网址获取ID失败，使用查询结果
             this.Utils.showPopup(
                 "知网下载链接查询失败",

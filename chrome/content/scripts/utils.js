@@ -41,6 +41,7 @@ Zotero.Jasminum.Utils = new function () {
 
 
     this.fixItem = async function (newItems, targetData) {
+        Zotero.debug(targetData);
         var creators;
         // 学位论文Thesis，导师 -> contributor
         for (let idx = 0; idx < newItems.length; idx++) {
@@ -131,6 +132,7 @@ Zotero.Jasminum.Utils = new function () {
                 newItem.setField("libraryCatalog", "CNKI");
             }
             newItem.setField("url", targetData.targetUrls[idx]);
+            Zotero.debug("** Jasminum fixItem url " + targetData.targetUrls[idx]);
             if (targetData.citations[idx]) {  // Add citation
                 var dateString = new Date().toLocaleDateString().replace(/\//g, '-');
                 var citationString = `${targetData.citations[idx]} citations(CNKI)[${dateString}]`;
