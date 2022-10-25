@@ -2,17 +2,20 @@
 
 <?xml-stylesheet href="chrome://jasminum/skin/updateMetadata.css" type="text/css"?>
 
-<!DOCTYPE window PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+<!DOCTYPE window SYSTEM
 		"chrome://jasminum/locale/updateMetadata.dtd">
 
-<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 		xmlns:html="http://www.w3.org/1999/xhtml"
 		id="jasminum-updateMetadata"
         title="CNKI Metadata Update"
+        persist="width height screenX screenY"
 		width="800"
 		height="600"
-		style="padding: 10px;"
-        onload="init();">
+        buttons="cancel,accept"
+        ondialogaccept="Jasminum_UpdateSelect.onAccept();"
+        ondialogcancel="alert('Cancel')"
+        onload="Jasminum_UpdateSelect.init();">
 	<vbox id="updateBox" flex="1">
 		<listbox>
             <listhead>
@@ -43,10 +46,10 @@
         </listbox>
         <label value='Click here'/>
 		<hbox>
-            <spacer flex="1"/>
-			<button id="apply-button" label="&jasminum.updateMetadata.apply;"/>
+			<button label="Select All" oncommand=""/>
+			<button label="Deselect All" oncommand=""/>
 		</hbox>
 	</vbox>
     <script src="chrome://zotero/content/include.js"/>
-    <script type="application/javascript" src="chrome://jasminum/content/scripts/updateMetadata.js"/>
-</window>
+    <script type="application/javascript" src="scripts/updateMetadata.js"/>
+</dialog>

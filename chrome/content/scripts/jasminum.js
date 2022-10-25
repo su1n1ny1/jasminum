@@ -666,13 +666,21 @@ Zotero.Jasminum = new function () {
             let postData = this.Scrape.createRefPostData([articleID]);
             let refdata = await this.Scrape.getRefText(postData);
             Zotero.debug(refdata);
-            var newItems = await this.Utils.trans2Items(refdata, null);
+            var newItems = await this.Utils.trans2Items(refdata, false);
+            Zotero.debug(newItems[0]);
             let targetData = {
                 targetUrls: [item.getField("url")],
                 citations: [null]
             };
-            newItems = await this.Utils.fixItem(newItems, targetData);
-            Zotero.debug(newItems[0]);
+            // newItems = await this.Utils.fixItem(newItems, targetData);
+
+            var io = { "old": item, "new": newItems[0] };
+            var newDialog = window.openDialog(
+                "chrome://jasminum/content/updateMetadata.xul",
+                "_blank",
+                "chrome,modal,centerscreen,resizable=yes",
+                io
+            );
         }
     }
 }
