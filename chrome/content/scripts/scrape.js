@@ -288,7 +288,7 @@ Zotero.Jasminum.Scrape = new function () {
             return { dbname: dbname[1], filename: filename[1], dbcode: dbcode[1] };
         } else { // 获取网址内容，获取ID
             try {
-                let htmlString = await this.Scrape.getHtmlPage(item.getField("url"));
+                let htmlString = await this.Scrape.getHtmlContent(item.getField("url"));
                 let htmlDocument = this.Utils.string2HTML(htmlString);
                 return await this.Scrape.getIDFromPage(htmlDocument);
             } catch (e) {
@@ -304,7 +304,7 @@ Zotero.Jasminum.Scrape = new function () {
      * @param {String} url 
      * @returns {String}
      */
-    this.getHtmlPage = async function (url) {
+    this.getHtmlContent = async function (url) {
         let pageResp = await Zotero.HTTP.request("GET", url);
         return pageResp.responseText;
     }
@@ -810,7 +810,7 @@ Zotero.Jasminum.Scrape = new function () {
 
 
     this.getRefIDs = async function (url) {
-        let htmlString = await this.Scrape.getHtmlPage(url);
+        let htmlString = await this.Scrape.getHtmlContent(url);
         let htmlDocument = this.Utils.string2HTML(htmlString);
         let listv = this.Scrape.getVlistFromPage(htmlDocument);
         let cnkiID = this.Scrape.getIDFromPage(htmlDocument);
