@@ -1,14 +1,14 @@
 {
-  "name": "zotero-addon-template",
-  "version": "0.1.5",
-  "description": "Zotero Addon Template",
+  "name": "jasminum",
+  "version": "1.0.0",
+  "description": "Jasminum",
   "config": {
-    "addonName": "Zotero Addon Template",
-    "addonID": "addontemplate@euclpts.com",
-    "addonRef": "addontemplate",
-    "addonInstance": "AddonTemplate",
-    "releasepage": "https://github.com/windingwind/zotero-addon-template/releases/latest/download/zotero-addon-template.xpi",
-    "updaterdf": "https://raw.githubusercontent.com/windingwind/zotero-addon-template/bootstrap/update.json"
+    "addonName": "Jasminum",
+    "addonID": "jasminum@linxzh.com",
+    "addonRef": "jasminum",
+    "addonInstance": "Jasminum",
+    "releasepage": "https://github.com/l0o0/jasminum/releases/latest/download/jasminum.xpi",
+    "updaterdf": "https://raw.githubusercontent.com/l0o0/jasminum/bootstrap/update.json"
   },
   "main": "src/index.ts",
   "scripts": {
@@ -28,14 +28,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/windingwind/zotero-addon-template.git"
+    "url": "git+https://github.com/l0o0/jasminum.git"
   },
   "author": "windingwind",
   "license": "AGPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/windingwind/zotero-addon-template/issues"
+    "url": "https://github.com/l0o0/jasminum/issues"
   },
-  "homepage": "https://github.com/windingwind/zotero-addon-template#readme",
+  "homepage": "https://github.com/l0o0/jasminum#readme",
   "dependencies": {
     "zotero-plugin-toolkit": "^2.0.1"
   },

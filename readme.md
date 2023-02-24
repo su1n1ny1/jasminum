@@ -1,5 +1,5 @@
 <div align="center">
-  <h1 align="center"><img class="center" src="./chrome/skin/default/jasminum/icon.png" alt="Icon" width=40px>  Jasminum - 茉莉花</h1>
+  <h1 align="center"><img class="center" src="./addon/chrome/skin/default/jasminum/icon.png" alt="Icon" width=40px>  Jasminum - 茉莉花</h1>
 </div>
 
 一个简单的 Zotero 中文插件（这个插件并不是 Zotero translator），实现的功能有：
@@ -78,3 +78,8 @@ Jasminum 插件中可以从[Translators_CN](https://github.com/l0o0/translators_
 
 3. 插件冲突
 根据之前反馈的信息，一些冲突的插件可能造成知网元数据拉取失败，书签添加不成功。可能冲突的插件有 [scite-zotero-plugin](https://github.com/scitedotai/scite-zotero-plugin)， [zotero-better-bibtex](https://github.com/retorquere/zotero-better-bibtex). 上述插件最新版本已经解决了冲突，请升级安装
+
+
+# ❤鸣谢
+
+本插件使用了 [Zotero addon template](https://github.com/windingwind/zotero-addon-template) 模板
