@@ -82,3 +82,20 @@ export function splitFilename(filename: string) {
         keyword: title,
     };
 }
+
+/**
+ * Get select data from zotero default select dialog.
+ * @param rowSelectors 
+ * @returns 
+ */
+export function selectRow (rowSelectors: Object) {
+    Zotero.debug("**Jasminum select window start");
+    var io = { dataIn: rowSelectors, dataOut: null };
+    var newDialog = Zotero.window.openDialog(
+        "chrome://zotero/content/ingester/selectitems.xul",
+        "_blank",
+        "chrome,modal,centerscreen,resizable=yes",
+        io
+    );
+    return io.dataOut;
+};

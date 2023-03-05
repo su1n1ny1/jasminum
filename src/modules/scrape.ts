@@ -66,7 +66,11 @@ class Scrape {
             "&displaymode=Refworks&orderparam=0&ordertype=desc&selectfield=&random=0.9317799522629542";
         return postData;
     }
-
+    /**
+     * 
+     * @param fileData Output of splitFilename 
+     * @returns {string} Data string for CNKI post method 
+     */
     createSearchPostData(fileData: {author: string, keyword: string}): string {
         let searchKeyword = fileData.keyword.replace(/ /g, '+');
         let searchIdx = 1;
@@ -167,10 +171,9 @@ class Scrape {
                 ChildItems: [],
             };
             childItems.push(titleChildItem);
-            // queryJson.QNode.QGroup[0].ChildItems.push(authorChildItem);
             searchIdx += 1;
         }
-        queryJson.QNode.QGroup[0]['ChildItems'] = childItems;
+        (queryJson.QNode.QGroup[0]['ChildItems'] as any) = childItems;
         var postData =
             "IsSearch=true&QueryJson=" +
             encodeURIComponent(JSON.stringify(queryJson)) +
@@ -181,4 +184,8 @@ class Scrape {
         return postData;
     }
 
+    
 }
+
+
+export default Scrape;
