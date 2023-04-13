@@ -19,7 +19,17 @@ async function onStartup() {
   initLocale();
   ztoolkit.ProgressWindow.setIconURI(
     "default",
-    `chrome://${config.addonRef}/content/icons/favicon.png`
+    `chrome://${config.addonRef}/content/icons/icon.png`
+  );
+
+  ztoolkit.ProgressWindow.setIconURI(
+    "error",
+    "chrome://zotero/skin/cross.png"
+  );
+
+  ztoolkit.ProgressWindow.setIconURI(
+    "success",
+    `chrome://${config.addonRef}/content/icons/accept.png`
   );
 
 //   const popupWin = new ztoolkit.ProgressWindow(config.addonName, {
@@ -27,7 +37,7 @@ async function onStartup() {
 //     closeTime: -1,
 //   })
 //     .createLine({
-//       text: getString("startup.begin"),
+//       text: "This is a text window",
 //       type: "default",
 //       progress: 0,
 //     })
