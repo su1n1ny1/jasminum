@@ -84,10 +84,25 @@ export class Views {
                 {
                     tag: "menuitem",
                     label: getString("menu.tools.dateformatter.label"),
-                    oncommand: "alert('menu.tools.dateformatter.label')",
+                    commandListener: (ev) => Messager.showPopup("This is test", "error", 5),
                     icon: iconBaseUrl + 'date.png'
                 }
             ]
         });
+    }
+}
+
+export class Messager {
+    static showPopup(text: string, type: string, timer: number = 1) {
+        const popupWin  = new ztoolkit.ProgressWindow(config.addonName, {
+            closeOnClick: true,
+            closeTime: timer,
+          })
+            .createLine({
+              text: text,
+              type: type,
+            })
+            .show();
+        popupWin.startCloseTimer(5000);
     }
 }
