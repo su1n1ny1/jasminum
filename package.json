@@ -14,7 +14,7 @@
   "scripts": {
     "build-dev": "cross-env NODE_ENV=development node scripts/build.js",
     "build-prod": "cross-env NODE_ENV=production node scripts/build.js",
-    "build": "concurrently -c auto npm:build-prod npm:tsc",
+    "build": "concurrently -c auto npm:build-prod npm:tsc --platform=node",
     "tsc": "tsc --noEmit",
     "start-z6": "node scripts/start.js --z 6",
     "start-z7": "node scripts/start.js --z 7",
@@ -30,13 +30,14 @@
     "type": "git",
     "url": "git+https://github.com/l0o0/jasminum.git"
   },
-  "author": "windingwind",
+  "author": "l0o0",
   "license": "AGPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/l0o0/jasminum/issues"
   },
   "homepage": "https://github.com/l0o0/jasminum#readme",
   "dependencies": {
+    "@nlpjs/nlp": "^4.26.1",
     "zotero-plugin-toolkit": "^2.0.1"
   },
   "devDependencies": {

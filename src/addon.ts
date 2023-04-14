@@ -1,6 +1,7 @@
 import ZoteroToolkit from "zotero-plugin-toolkit/dist/index";
 import { ColumnOptions } from "zotero-plugin-toolkit/dist/helpers/virtualizedTable";
 import hooks from "./hooks";
+import { MyCookieSandbox } from "./modules/scrape";
 
 class Addon {
   public data: {
@@ -17,6 +18,7 @@ class Addon {
       columns: Array<ColumnOptions>;
       rows: Array<{ [dataKey: string]: string }>;
     };
+    cookieBox: MyCookieSandbox;
   };
   // Lifecycle hooks
   public hooks: typeof hooks;
@@ -29,6 +31,7 @@ class Addon {
       env: __env__,
       // ztoolkit: new MyToolkit(),
       ztoolkit: new ZoteroToolkit(),
+      cookieBox: new MyCookieSandbox(),
     };
     this.hooks = hooks;
     this.api = {};

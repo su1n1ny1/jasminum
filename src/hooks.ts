@@ -47,7 +47,7 @@ async function onStartup() {
 
   BasicExampleFactory.registerNotifier();
 
-  KeyExampleFactory.registerShortcuts();
+//   KeyExampleFactory.registerShortcuts();
 
   await Zotero.Promise.delay(1000);
 //   popupWin.changeLine({
@@ -91,6 +91,12 @@ async function onStartup() {
 //   popupWin.startCloseTimer(5000);
 
 //   addon.hooks.onDialogEvents("dialogExample");
+new ztoolkit.ProgressWindow(config.addonName)
+      .createLine({
+        text: "Build: " + getString("build.time"),
+        type: "success",
+      })
+      .show();
 }
 
 function onShutdown(): void {

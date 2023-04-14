@@ -17,3 +17,34 @@ declare const rootURI: string;
 declare const addon: import("../src/addon").default;
 
 declare const __env__: "production" | "development";
+
+declare interface Window {
+    openDialog(
+        url: string,
+        target?: string,
+        features?: string,
+        ...args: any
+    ): Window;
+}
+
+// Customized types
+declare interface MyCreator {
+    firstName: string;
+    lastName: string;
+    creatorType: string;
+    fieldMode: number;
+    creatorTypeID?: number;
+}
+
+declare interface CNKIID {
+    dbcode: string;
+    dbname: string;
+    filename: string;
+}
+
+declare interface ResultRow {
+    id: CNKIID;
+    title: string;
+    url: string;
+    citation: string;
+}
