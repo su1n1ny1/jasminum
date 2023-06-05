@@ -3,12 +3,118 @@
   onload="Zotero.__addonInstance__.hooks.onPrefsEvent('load', {window})"
 >
   <groupbox>
-    <label><html:h2>&zotero.__addonRef__.pref.title;</html:h2></label>
-    <checkbox
-      id="zotero-prefpane-__addonRef__-enable"
-      label="&zotero.__addonRef__.pref.enable.label;"
-      preference="extensions.zotero.__addonRef__.enable"
-    />
+    <caption label="&chinese.caption;"/>
+    <checkbox id="jasminum.autoupdate" label="&autoupdate.label;" preference="extensions.zotero.jasminum.autoupdate"/>
+    <checkbox id="jasminum.zhnamesplit" label="&zhnamesplit.label;" preference="extensions.zotero.jasminum.zhnamesplit"/>
+    <checkbox id="jasminum.rename" label="&rename.label;" preference="extensions.zotero.jasminum.rename"/>
+    <checkbox id="jasminum.autobookmark" label="&autobookmark.label;" preference="extensions.zotero.jasminum.autobookmark"/>
+    <row>
+        <checkbox id="jasminum.autolanguage" label="&autolanguage.label;" preference="extensions.zotero.jasminum.autolanguage"/>
+        <label value="&autolanguagefunc.label;" style="padding-top: 6px;"/>
+        <menulist flex="0.5"  id="jasminum.autolanguagefunc" preference="extensions.zotero.jasminum.autolanguagefunc">
+            <menupopup>
+                <menuitem label="Auto" value="Auto"/>
+                <menuitem label="Manual" value="Manual"/>
+            </menupopup>
+        </menulist>
+    </row>
+    
+    <row>
+        <label value="&cnkicite.label;" style="padding-top: 6px;"/>
+        <menulist flex="0.5" editable="true" id="jasminum.citefield" preference="extensions.zotero.jasminum.citefield">
+            <menupopup>
+                <menuitem label="extra"/>
+            </menupopup>
+        </menulist>
+    </row>
+    </groupbox>
+    <groupbox>
+        <caption label="&namepatent.caption;"/>
+        <vbox flex="1">
+            <row>
+                <description>&namepatent.desc.info;</description>
+                <menulist flex="1" editable="true" id="jasminum.namepatent" preference="pref-jasminum.namepatent"> 
+                    <menupopup>
+                        <menuitem label="{%t}_{%g}" value="{%t}_{%g}" tooltiptext="&namepatent.desc.tg;"/>
+                        <menuitem label="{%t}" value="{%t}" tooltiptext="&namepatent.desc.t;"/>
+                    </menupopup>
+                </menulist>
+                <image src="chrome://jasminum/skin/information.png" tooltiptext="&namepatent.desc;"/>
+            </row>
+        </vbox>
+    </groupbox>
+    <groupbox>
+        <caption label="&attachment.caption;"/>
+        <vbox flex="1">
+            <row> 
+                <description>&attachment.type.info;</description>
+                <menulist flex="0.5" id="jasminum.attachment" preference="pref-jasminum.attachment">
+                    <menupopup>
+                        <menuitem label="pdf" value="pdf"/>
+                        <menuitem label="caj" value="caj"/>
+                    </menupopup>
+                </menulist>
+            </row>
+            <hbox>
+                <description>&attachment.cookie.info;</description>
+                <button label="&open.cnki;" oncommand="openCNKI();"/>
+            </hbox>
+            <!-- <hbox>
+                <description>&cookie.endtime;</description>
+                <label id="cookie_endtime" value=""/>
+            </hbox> -->
+        </vbox>
+    </groupbox>
+    <groupbox>
+        <caption label="&pdftk.caption;"/>
+        <description>&pdftk.info; <label class="zotero-text-link" value="PDFtk Server" href="https://www.pdflabs.com/tools/pdftk-server/"/></description>
+        <hbox style="margin: 0" align="center">
+            <textbox id="jasminum-pdftk-path" preference="pref-jasminum.pdftkpath" readonly="true" flex="1"/>
+            <button label="&choose;" oncommand="choosePath();"/>
+            <image id="path-accept" src="chrome://jasminum/skin/accept.png" tooltiptext="&pdftk.path.check.ok;" hidden="true"/>
+            <image id="path-error" src="chrome://jasminum/skin/exclamation.png" tooltiptext="&pdftk.path.check.error;" hidden="true"/>
+        </hbox>
+    </groupbox>
+    <groupbox>
+        <caption label="&toolbox.caption;"/>
+        <vbox flex="1">
+            <checkbox id="jasminum.ennamesplit" label="&toolbox.ennamesplit.label;" preference="pref-jasminum.ennamesplit"/>
+            <row>
+                <description>&toolbox.bacthsetlanguage.info;</description>
+                <textbox id="jasminum.languagelist" preference="pref-jasminum.languagelist"/>
+                <image src="chrome://jasminum/skin/information.png" 
+                    style="margin-top:5px;margin-bottom:5px"
+                    tooltiptext="&toolbox.bacthsetlanguage.desc;"/>
+            </row>
+            <row>
+                <description>&toolbox.manualsetlanguage.info;</description>
+                <menulist flex="0.5" editable="true" id="jasminum.language" preference="pref-jasminum.language"> 
+                    <menupopup>
+                        <menuitem label="zh_CN" value="zh_CN"/>
+                        <menuitem label="en_US" value="en_US"/>
+                        <menuitem label="zh-CN" value="zh-CN"/>
+                        <menuitem label="en-US" value="en-US"/>
+                    </menupopup>
+                </menulist>
+                <image src="chrome://jasminum/skin/information.png" 
+                    style="margin-top:5px;margin-bottom:5px"
+                    tooltiptext="&toolbox.manualsetlanguage.desc;"/>
+            </row>
+            <row>
+                <description>&toolbox.dateformatter.info;</description>
+                <menulist flex="1" editable="false" id="jasminum.dateformatter" preference="pref-jasminum.dateformatter" maxwidth="110" >
+                    <menupopup>
+                        <menuitem label="ISO" value="ISO" tooltiptext="&toolbox.dateformatter.iso;"/>
+                        <menuitem label="Short" value="short" tooltiptext="&toolbox.dateformatter.short;"/>
+                        <menuitem label="Short Reverse" value="shortReverse" tooltiptext="&toolbox.dateformatter.shortreverse;"/>
+                        <menuitem label="Year Only" value="yearOnly" tooltiptext="&toolbox.dateformatter.yearonly;"/>
+                    </menupopup>
+                </menulist>
+                <checkbox id="jasminum.dateformatterfill" label="&toolbox.dateformatterfill;" preference="pref-jasminum.dateformatterfill"/>
+            </row>
+        </vbox>
+    </groupbox>
+    <groupbox>
     <hbox>
       <html:label for="zotero-prefpane-__addonRef__-input"
         >&zotero.__addonRef__.pref.input.label;</html:label
