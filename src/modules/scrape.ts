@@ -198,7 +198,8 @@ export async function searchCNKI(fileData: any): Promise<ResultRow[]> {
         cookieSandbox: addon.data.cookieBox.searchCookieBox,
         body: postData,
     });
-    // Zotero.debug(resp.responseText);
+    Zotero.debug(resp.responseText);
+    Zotero.debug(resp.status);
     // targetRows
     const html = string2HTML(resp.responseText);
     const rows = html.querySelectorAll(

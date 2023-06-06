@@ -185,7 +185,8 @@ export function getURLFromID(id: CNKIID, en: boolean = false) {
 
 export function splitFilename(filename: string) {
     // Make query parameters from filename
-    const patent = Zotero.Prefs.get("jasminum.namepatent") as string;
+    // const patent = Zotero.Prefs.get("jasminum.namepatent") as string;
+    const patent = "{%t}_{%g}";
     let prefix = filename
         .replace(/\.\w+$/, "") // 删除文件后缀
         .replace(/\.ashx$/g, "") // 删除末尾.ashx字符

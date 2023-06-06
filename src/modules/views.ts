@@ -1,6 +1,7 @@
 import { getString } from "./locale";
 import { config } from "../../package.json";
 import { autoSetLanguage, concatName, dateFormatter, manualSetLanguage, removeComma, splitName, splitSemicolonNames } from "./tools";
+import { searchCNKIForItems } from "./scrape";
 
 // Control submenu display
 /**
@@ -89,7 +90,7 @@ export class Views {
                 {
                     tag: "menuitem",
                     label: getString("menu.CNKI.update.label"),
-                    oncommand: "alert('menu.CNKI.update.label')",
+                    commandListener: (ev) => searchCNKIForItems(),
                     icon: iconBaseUrl + 'searchCNKI.png',
                     getVisibility: (elem, en) => test()
                 },
@@ -98,21 +99,18 @@ export class Views {
                     label: getString("menu.CNKI.updateCiteCSSCI.label"),
                     oncommand: "alert('menu.CNKI.updateCiteCSSCI.label')",
                     icon: iconBaseUrl + 'cssci.png',
-                    hidden: !showRegularTop
                 },
                 {
                     tag: "menuitem",
                     label: getString("menu.CNKI.attachment.label"),
                     oncommand: "alert('menu.CNKI.attachment.label')",
                     icon: iconBaseUrl + 'pdf.png',
-                    hidden: !showRegularTop
                 },
                 {
                     tag: "menuitem",
                     label: getString("menu.CNKI.addBookmark.label"),
                     oncommand: "alert('menu.CNKI.addBookmark.label')",
                     icon: iconBaseUrl + 'bookmark.png',
-                    hidden: showBookmark
                 }
             ]
         });
@@ -122,7 +120,6 @@ export class Views {
             id: "jasminum-popup-menu-tools",
             label: getString("menu.tools.label"),
             icon: iconBaseUrl + "tools.png",
-            hidden: !(showSearch || showRegularTop || showBookmark),
             children: [
                 {
                     tag: "menuitem",
